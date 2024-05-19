@@ -1,8 +1,6 @@
-const express = require('express')
 const workoutModel = require('../models/workoutModel')
 
 // get all
-
 const getAllWorkouts = async(req,res)=>{
     const workouts = await workoutModel.find({}).sort({createdAt:-1})
     res.status(200).json(workouts)
@@ -20,7 +18,7 @@ if(!workout){
 res.status(200).json(workout)
 }
 // post one
-const createWorkout =  async (req,res)=>{
+const createWorkout=  async (req,res)=>{
     const {title,load,reps} =  req.body
     try {
         const workOutItem = await workoutModel.
@@ -30,8 +28,26 @@ const createWorkout =  async (req,res)=>{
         res.status(400).json({msg:'ERROR:post a new workout'+ error.message})
     }
 }
+const deleteWorkout = async(req,res)=>{
+    const{id} = req.params
+    const workout =await workoutModel.findByIdAndDelete({_id:id})
+    if(workout){
+        res.status(200).json(workout)
+    }
+}
+const updateWorkout = async(req,res)=>{
+    const{id} = req.params
+    const workout =await workoutModel.findByIdAndUpdate({_id:id},{
+        ...req.body
+    })
+    if(workout){
+        res.status(200).json(workout)
+    }
+}
 module.exports = {
     getAllWorkouts,
     getSingleWorkout,
-    createWorkout
+    createWorkout,
+    deleteWorkout,
+    updateWorkout
 }
