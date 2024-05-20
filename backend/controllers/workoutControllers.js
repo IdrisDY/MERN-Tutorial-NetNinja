@@ -20,6 +20,19 @@ res.status(200).json(workout)
 // post one
 const createWorkout=  async (req,res)=>{
     const {title,load,reps} =  req.body
+    let emptyFields=  []
+    if (!title){
+        emptyFields.push('title')
+    }
+    if (!load){
+        emptyFields.push('load')
+    }
+    if (!reps){
+        emptyFields.push('reps')
+    }
+    if (emptyFields.length > 0){
+        res.status(400).json({msg:'ERROR:Pls fill all the fields',emptyFields})
+    }
     try {
         const workOutItem = await workoutModel.
         create({title,load,reps})
