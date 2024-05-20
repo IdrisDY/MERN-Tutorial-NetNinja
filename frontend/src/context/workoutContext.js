@@ -13,6 +13,11 @@ switch (action.type) {
         return{
             workouts:[action.payload ,...state.workouts]
         }
+    case 'DELETE_WORKOUT':
+
+        return{
+            workouts:state.workouts.filter(item=>item._id !== action.payload._id)
+        }
     default:
         return state
         break;
@@ -21,9 +26,9 @@ switch (action.type) {
 
 export const WorkoutsContextProvider = ({ children }) => {
 
-    const [state,disptach] =  useReducer(workoutReducer,{
+    const [state,dispatch] =  useReducer(workoutReducer,{
         workouts:null
     })
 
-  return <WorkoutsContext.Provider value={{state,dispatch}} >{children}</WorkoutsContext.Provider>;
+  return <WorkoutsContext.Provider value={{...state,dispatch}}>{children}</WorkoutsContext.Provider>;
 };
